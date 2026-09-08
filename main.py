@@ -1,16 +1,26 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from sklearn.datasets import fetch_openml
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPRegressor
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    mnist = fetch_openml('mnist_784', version=1, as_frame=True)
+
+    x = mnist.data.astype('float') / 255.0
+
+    x_train, x_test = train_test_split(x, test_size=0.2, random_state=42)
+
+    autoEncoder = MLPRegressor(max_iter=5000, random_state=42,
+                               hidden_layer_sizes=(32,), activation='relu', solver='adam')
+
+    autoEncoder.fit(x_train,x_train)
+    prediction = autoEncoder.predict(x_test)
+
+    mse = mean_squared_error(x_test, prediction)
+
+    print(mse)
+
+
+

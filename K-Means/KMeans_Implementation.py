@@ -64,8 +64,12 @@ class K_Means:
             index = np.argmin(distance)
             prediction.append(index)
 
-        return prediction
+        ret = []
 
+        for x in prediction:
+            ret.append(int(x))
+
+        return ret
 
 
 
